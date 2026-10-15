@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gửi em, cô gái đặc biệt ♡</title>
+
+<style>
+:root {
+  --pink: #ff7da8;
+  --rose: #ff477e;
+  --ink: #66364d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--ink);
+  font-family: Arial, Tahoma, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 15% 15%, #fff8fb 0, transparent 30%),
+    radial-gradient(circle at 85% 20%, #ffe1ec 0, transparent 32%),
+    linear-gradient(135deg, #fff0f5, #ffe4ed 48%, #fff7fa);
+  display: grid;
+  place-items: center;
+  padding: 28px 14px;
+}
+
+.glow {
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: .45;
+  pointer-events: none;
+  z-index: -1;
+  animation: drift 9s ease-in-out infinite alternate;
+}
+
+.glow.one {
+  background: #ff9cbd;
+  top: -90px;
+  left: -60px;
+}
+
+.glow.two {
+  background: #ffc7dd;
+  right: -80px;
+  bottom: -90px;
+  animation-delay: -4s;
+}
+
+@keyframes drift {
+  to {
+    transform: translate(35px, 28px) scale(1.15);
+  }
+}
+
+.card {
+  width: min(760px, 100%);
+  position: relative;
+  padding: clamp(25px, 5vw, 52px);
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(255, 255, 255, .95);
+  border-radius: 30px;
+  box-shadow: 0 24px 80px rgba(179, 67, 111, .16);
+  backdrop-filter: blur(14px);
+  text-align: center;
+  overflow: hidden;
+  animation: cardIn 1s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.topline {
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-size: .72rem;
+  color: #c56d8e;
+}
+
+.flower {
+  font-size: 2rem;
+  margin: 12px 0 4px;
+  animation: bob 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-7px) rotate(4deg);
+  }
+}
+
+h1 {
+  font-family: Arial, Tahoma, "Segoe UI", sans-serif;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  line-height: 1.15;
+  color: #b83e70;
+  margin: 10px 0 14px;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 0 auto 26px;
+  color: #9c6b7f;
+  font-size: .98rem;
+}
+
+.letter {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 239, 245, .9),
+    rgba(255, 248, 251, .9)
+  );
+  border: 1px solid #ffe0eb;
+  font-family: Arial, Tahoma, "Segoe UI", sans-serif;
+  font-size: clamp(1.08rem, 2.7vw, 1.35rem);
+  line-height: 1.8;
+  white-space: pre-line;
+  transition: opacity .45s, transform .45s;
+}
+
+.letter.fade {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.progress {
+  height: 4px;
+  border-radius: 8px;
+  background: #f9d5e2;
+  margin: 18px auto 8px;
+  overflow: hidden;
+  max-width: 360px;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #ff9cbd, #e94f88);
+  border-radius: 8px;
+  transition: width .3s;
+}
+
+.count {
+  color: #b77b93;
+  font-size: .8rem;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 18px 0 8px;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 19px;
+  font: 600 .92rem Arial, Tahoma, sans-serif;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px #e7a1bb55;
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.primary {
+  color: white;
+  background: linear-gradient(135deg, #f878a5, #e84c83);
+}
+
+.secondary {
+  color: #b74775;
+  background: #fff;
+  border: 1px solid #f8cfdd;
+}
+
+.hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.heart {
+  position: absolute;
+  bottom: -40px;
+  opacity: 0;
+  animation: floatUp linear forwards;
+  filter: drop-shadow(0 3px 4px #e77aa533);
+}
+
+@keyframes floatUp {
+  10% {
+    opacity: .75;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(35deg);
+    opacity: 0;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  color: #f08caf;
+  animation: twinkle 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: .25;
+    transform: scale(.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Tối ưu cho điện thoại */
+@media (max-width: 480px) {
+  body {
+    padding: 16px 10px;
+  }
+
+  .card {
+    padding: 25px 16px;
+    border-radius: 24px;
+  }
+
+  .topline {
+    font-size: .62rem;
+    letter-spacing: .14em;
+  }
+
+  .flower {
+    font-size: 1.7rem;
+  }
+
+  .subtitle {
+    font-size: .9rem;
+    margin-bottom: 20px;
+  }
+
+  .letter {
+    min-height: 190px;
+    padding: 20px 15px;
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+
+  .controls {
+    gap: 8px;
+  }
+
+  button {
+    padding: 11px 15px;
+    font-size: .86rem;
+  }
+
+  .count {
+    margin-bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="glow one"></div>
+<div class="glow two"></div>
+<div class="hearts" id="hearts"></div>
+
+<main class="card">
+  <div class="topline">A little letter, just for you</div>
+  <div class="flower">🌷 ✨ 🌷</div>
+
+  <h1>Gửi Nguyệt Hằng,<br>cô gái đặc biệt 💗</h1>
+
+  <p class="subtitle">
+    Một chiếc thiệp nhỏ dành riêng cho ngày 20/10
+  </p>
+
+  <section class="letter" id="letter" aria-live="polite">
+    Chạm vào nút bên dưới để mở lá thư nhé… 💌
+  </section>
+
+  <div class="progress">
+    <span id="progress"></span>
+  </div>
+
+  <div class="count" id="count">
+    Sẵn sàng gửi một chút dịu dàng 💗
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="startBtn">
+      Mở lá thư 💌
+    </button>
+
+    <button class="secondary" id="pauseBtn" disabled>
+      Tạm dừng
+    </button>
+
+    <button class="secondary" id="nextBtn" disabled>
+      Lời tiếp theo →
+    </button>
+  </div>
+</main>
+
+<script>
+const messages = [
+  "Gửi em, cô gái đặc biệt 💗",
+
+  "Chúc em có một ngày 20/10 thật vui vẻ, luôn xinh đẹp, rạng rỡ và gặp thật nhiều điều dịu dàng trong cuộc sống nhé. 🌷",
+
+  "Có một điều mà có lẽ em chưa biết, đó là em đã khiến những ngày bình thường của anh trở nên thú vị hơn một chút.",
+
+  "Đôi khi chỉ là một nụ cười, một câu nói vu vơ hay một khoảnh khắc rất đỗi bình thường của em thôi, cũng đủ khiến anh nhớ mãi.",
+
+  "Anh không biết sau này chúng ta sẽ như thế nào, nhưng hiện tại, anh thật lòng rất vui vì được biết đến em.",
+
+  "Anh làm chiếc thiệp nhỏ này để gửi em một lời chúc đặc biệt, và cũng để em biết rằng có một người đang âm thầm mong em luôn vui vẻ, hạnh phúc và được yêu thương thật nhiều.",
+
+  "Nếu hôm nay chưa có ai nói với em điều này, thì để anh nói nhé:",
+
+  "Em xứng đáng với tất cả những điều tốt đẹp nhất. 💗",
+
+  "Chúc cô gái anh quý có một ngày 20/10 thật đáng nhớ.",
+
+  "P/s: Nếu em tò mò người gửi lá thư này đang nghĩ gì về em… thì câu trả lời là: nhiều hơn em tưởng một chút đấy. 🤭",
+
+  "Một người đang muốn đến gần em hơn 💗"
+];
+
+const letter = document.getElementById("letter");
+const count = document.getElementById("count");
+const progress = document.getElementById("progress");
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+let index = -1;
+let timer = null;
+let paused = false;
+let transitionTimer = null;
+
+const delay = 5200;
+
+function showMessage(i) {
+  index = (i + messages.length) % messages.length;
+
+  clearTimeout(transitionTimer);
+  letter.classList.add("fade");
+
+  transitionTimer = setTimeout(() => {
+    letter.textContent = messages[index];
+    letter.classList.remove("fade");
+
+    count.textContent =
+      `Lời nhắn ${index + 1} / ${messages.length} 💗`;
+
+    progress.style.width =
+      `${((index + 1) / messages.length) * 100}%`;
+  }, 300);
+}
+
+function scheduleNext() {
+  clearTimeout(timer);
+
+  if (paused) return;
+
+  if (index < messages.length - 1) {
+    timer = setTimeout(() => {
+      showMessage(index + 1);
+      scheduleNext();
+    }, delay);
+  } else {
+    paused = true;
+    pauseBtn.textContent = "Đọc lại từ đầu";
+  }
+}
+
+function start() {
+  clearTimeout(timer);
+  paused = false;
+
+  pauseBtn.disabled = false;
+  nextBtn.disabled = false;
+  pauseBtn.textContent = "Tạm dừng";
+
+  if (index < 0 || index >= messages.length - 1) {
+    showMessage(0);
+  }
+
+  scheduleNext();
+}
+
+startBtn.addEventListener("click", start);
+
+pauseBtn.addEventListener("click", () => {
+  if (index >= messages.length - 1 && paused) {
+    index = -1;
+    start();
+    return;
+  }
+
+  paused = !paused;
+
+  pauseBtn.textContent = paused ? "Tiếp tục" : "Tạm dừng";
+
+  if (paused) {
+    clearTimeout(timer);
+  } else {
+    scheduleNext();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  clearTimeout(timer);
+  paused = false;
+  pauseBtn.textContent = "Tạm dừng";
+
+  if (index < messages.length - 1) {
+    showMessage(index + 1);
+  } else {
+    showMessage(0);
+  }
+
+  scheduleNext();
+});
+
+// Hiệu ứng trái tim bay
+const hearts = document.getElementById("hearts");
+
+function makeHeart() {
+  const el = document.createElement("span");
+
+  el.className = "heart";
+  el.textContent = ["♡", "♥", "💗", "✧", "🌸"][
+    Math.floor(Math.random() * 5)
+  ];
+
+  el.style.left = `${Math.random() * 100}%`;
+  el.style.fontSize = `${14 + Math.random() * 22}px`;
+  el.style.animationDuration = `${8 + Math.random() * 8}s`;
+
+  hearts.appendChild(el);
+
+  setTimeout(() => el.remove(), 17000);
+}
+
+setInterval(makeHeart, 850);
+
+for (let i = 0; i < 12; i++) {
+  setTimeout(makeHeart, i * 250);
+}
+
+// Hiệu ứng ánh sáng lấp lánh
+for (let i = 0; i < 8; i++) {
+  const sparkle = document.createElement("span");
+
+  sparkle.className = "sparkle";
+  sparkle.textContent = "✦";
+  sparkle.style.left = `${8 + Math.random() * 84}%`;
+  sparkle.style.top = `${8 + Math.random() * 84}%`;
+  sparkle.style.animationDelay = `${Math.random() * 2}s`;
+  sparkle.style.fontSize = `${10 + Math.random() * 10}px`;
+
+  document.querySelector(".card").appendChild(sparkle);
+}
+</script>
+</body>
+</html>
