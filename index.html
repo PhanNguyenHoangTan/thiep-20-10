@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -210,20 +211,6 @@ button:disabled {
   border: 1px solid #f8cfdd;
 }
 
-.music-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #fff;
-  border: 1px solid #f8cfdd;
-  color: #b74775;
-  padding: 8px 14px;
-  font-size: 0.8rem;
-  border-radius: 999px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(231, 161, 187, 0.2);
-}
-
 .hearts {
   position: fixed;
   inset: 0;
@@ -268,6 +255,7 @@ button:disabled {
   }
 }
 
+/* Tối ưu cho điện thoại */
 @media (max-width: 480px) {
   body {
     padding: 16px 10px;
@@ -276,13 +264,6 @@ button:disabled {
   .card {
     padding: 25px 16px;
     border-radius: 24px;
-  }
-
-  .music-toggle {
-    top: 15px;
-    right: 15px;
-    padding: 6px 10px;
-    font-size: 0.75rem;
   }
 
   .topline {
@@ -321,9 +302,7 @@ button:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: .01ms !important;
     transition-duration: .01ms !important;
   }
@@ -332,19 +311,17 @@ button:disabled {
 </head>
 
 <body>
+
+<!-- Nhạc nền: file MP3 nằm cùng thư mục với index.html -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="./thegioicuaanh.mp3" type="audio/mpeg">
+</audio>
+
 <div class="glow one"></div>
 <div class="glow two"></div>
 <div class="hearts" id="hearts"></div>
 
-<!-- Thẻ audio phát nhạc -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="thegioicuanh.mp3" type="audio/mpeg">
-</audio>
-
 <main class="card">
-  <!-- Nút bật/tắt nhạc nhanh góc trên thiệp -->
-  <button class="music-toggle" id="musicToggleBtn">🔇 Bật nhạc</button>
-
   <div class="topline">A little letter, just for you</div>
   <div class="flower">🌷 ✨ 🌷</div>
 
@@ -384,15 +361,25 @@ button:disabled {
 <script>
 const messages = [
   "Gửi em, cô gái đặc biệt 💗",
+
   "Chúc em có một ngày 20/10 thật vui vẻ, luôn xinh đẹp, rạng rỡ và gặp thật nhiều điều dịu dàng trong cuộc sống nhé. 🌷",
+
   "Có một điều mà có lẽ em chưa biết, đó là em đã khiến những ngày bình thường của anh trở nên thú vị hơn một chút.",
+
   "Đôi khi chỉ là một nụ cười, một câu nói vu vơ hay một khoảnh khắc rất đỗi bình thường của em thôi, cũng đủ khiến anh nhớ mãi.",
+
   "Anh không biết sau này chúng ta sẽ như thế nào, nhưng hiện tại, anh thật lòng rất vui vì được biết đến em.",
+
   "Anh làm chiếc thiệp nhỏ này để gửi em một lời chúc đặc biệt, và cũng để em biết rằng có một người đang âm thầm mong em luôn vui vẻ, hạnh phúc và được yêu thương thật nhiều.",
+
   "Nếu hôm nay chưa có ai nói với em điều này, thì để anh nói nhé:",
+
   "Em xứng đáng với tất cả những điều tốt đẹp nhất. 💗",
+
   "Chúc cô gái anh quý có một ngày 20/10 thật đáng nhớ.",
+
   "P/s: Nếu em tò mò người gửi lá thư này đang nghĩ gì về em… thì câu trả lời là: nhiều hơn em tưởng một chút đấy. 🤭",
+
   "Một người đang muốn đến gần em hơn 💗"
 ];
 
@@ -403,7 +390,6 @@ const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const nextBtn = document.getElementById("nextBtn");
 const bgMusic = document.getElementById("bgMusic");
-const musicToggleBtn = document.getElementById("musicToggleBtn");
 
 let index = -1;
 let timer = null;
@@ -446,24 +432,20 @@ function scheduleNext() {
   }
 }
 
-function playMusic() {
-  bgMusic.play().then(() => {
-    musicToggleBtn.textContent = "🔊 Tắt nhạc";
-  }).catch(error => {
-    console.log("Trình duyệt chặn phát nhạc tự động:", error);
-    musicToggleBtn.textContent = "🔇 Bật nhạc";
-  });
-}
-
 function start() {
   clearTimeout(timer);
   paused = false;
 
+  // Phát nhạc khi người dùng nhấn Mở lá thư
+  if (bgMusic.paused) {
+    bgMusic.play().catch(error => {
+      console.log("Không thể phát nhạc:", error);
+    });
+  }
+
   pauseBtn.disabled = false;
   nextBtn.disabled = false;
   pauseBtn.textContent = "Tạm dừng";
-
-  playMusic();
 
   if (index < 0 || index >= messages.length - 1) {
     showMessage(0);
@@ -473,16 +455,6 @@ function start() {
 }
 
 startBtn.addEventListener("click", start);
-
-// Thêm sự kiện cho nút bật/tắt nhạc góc trên thiệp
-musicToggleBtn.addEventListener("click", () => {
-  if (bgMusic.paused) {
-    playMusic();
-  } else {
-    bgMusic.pause();
-    musicToggleBtn.textContent = "🔇 Bật nhạc";
-  }
-});
 
 pauseBtn.addEventListener("click", () => {
   if (index >= messages.length - 1 && paused) {
@@ -497,11 +469,8 @@ pauseBtn.addEventListener("click", () => {
 
   if (paused) {
     clearTimeout(timer);
-    bgMusic.pause();
-    musicToggleBtn.textContent = "🔇 Bật nhạc";
   } else {
     scheduleNext();
-    playMusic();
   }
 });
 
@@ -509,8 +478,6 @@ nextBtn.addEventListener("click", () => {
   clearTimeout(timer);
   paused = false;
   pauseBtn.textContent = "Tạm dừng";
-
-  playMusic();
 
   if (index < messages.length - 1) {
     showMessage(index + 1);
@@ -561,5 +528,7 @@ for (let i = 0; i < 8; i++) {
   document.querySelector(".card").appendChild(sparkle);
 }
 </script>
+
 </body>
 </html>
+```
