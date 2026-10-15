@@ -432,23 +432,45 @@ function scheduleNext() {
   }
 }
 
+```javascript
 function start() {
   clearTimeout(timer);
+  clearTimeout(transitionTimer);
   paused = false;
 
-  // Phát nhạc khi người dùng nhấn Mở lá thư
-  if (bgMusic.paused) {
-    bgMusic.play().catch(error => {
-      console.log("Không thể phát nhạc:", error);
-    });
+  // Mở thư ngay lập tức, không phụ thuộc vào nhạc
+  if (index < 0 || index >= messages.length - 1) {
+    index = 0;
   }
+
+  letter.textContent = messages[index];
+  letter.classList.remove("fade");
+
+  count.textContent =
+    `Lời nhắn ${index + 1} / ${messages.length} 💗`;
+
+  progress.style.width =
+    `${((index + 1) / messages.length) * 100}%`;
 
   pauseBtn.disabled = false;
   nextBtn.disabled = false;
   pauseBtn.textContent = "Tạm dừng";
 
-  if (index < 0 || index >= messages.length - 1) {
-    showMessage(0);
+  // Phát nhạc độc lập với việc hiển thị thư
+  try {
+    bgMusic.volume = 0.7;
+
+    if (bgMusic.paused) {
+      const playPromise = bgMusic.play();
+
+      if (playPromise) {
+        playPromise.catch(error => {
+          console.warn("Không phát được nhạc:", error);
+        });
+      }
+    }
+  } catch (error) {
+    console.warn("Lỗi âm thanh:", error);
   }
 
   scheduleNext();
