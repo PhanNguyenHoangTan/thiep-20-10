@@ -210,6 +210,20 @@ button:disabled {
   border: 1px solid #f8cfdd;
 }
 
+.music-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #fff;
+  border: 1px solid #f8cfdd;
+  color: #b74775;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(231, 161, 187, 0.2);
+}
+
 .hearts {
   position: fixed;
   inset: 0;
@@ -264,6 +278,13 @@ button:disabled {
     border-radius: 24px;
   }
 
+  .music-toggle {
+    top: 15px;
+    right: 15px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
   .topline {
     font-size: .62rem;
     letter-spacing: .14em;
@@ -315,12 +336,15 @@ button:disabled {
 <div class="glow two"></div>
 <div class="hearts" id="hearts"></div>
 
-<!-- Thẻ audio chứa file nhạc đã tải lên GitHub -->
-<audio id="bgMusic" loop>
-  <source src="thegioicuaanh.mp3" type="audio/mpeg">
+<!-- Thẻ audio phát nhạc -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="thegioicuanh.mp3" type="audio/mpeg">
 </audio>
 
 <main class="card">
+  <!-- Nút bật/tắt nhạc nhanh góc trên thiệp -->
+  <button class="music-toggle" id="musicToggleBtn">🔇 Bật nhạc</button>
+
   <div class="topline">A little letter, just for you</div>
   <div class="flower">🌷 ✨ 🌷</div>
 
@@ -378,7 +402,8 @@ const progress = document.getElementById("progress");
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const nextBtn = document.getElementById("nextBtn");
-const bgMusic = document.getElementById("bgMusic"); // Lấy thẻ audio
+const bgMusic = document.getElementById("bgMusic");
+const musicToggleBtn = document.getElementById("musicToggleBtn");
 
 let index = -1;
 let timer = null;
@@ -421,6 +446,15 @@ function scheduleNext() {
   }
 }
 
+function playMusic() {
+  bgMusic.play().then(() => {
+    musicToggleBtn.textContent = "🔊 Tắt nhạc";
+  }).catch(error => {
+    console.log("Trình duyệt chặn phát nhạc tự động:", error);
+    musicToggleBtn.textContent = "🔇 Bật nhạc";
+  });
+}
+
 function start() {
   clearTimeout(timer);
   paused = false;
@@ -429,10 +463,7 @@ function start() {
   nextBtn.disabled = false;
   pauseBtn.textContent = "Tạm dừng";
 
-  // Bật nhạc khi bấm nút mở thư
-  bgMusic.play().catch(error => {
-    console.log("Trình duyệt chặn tự động phát nhạc:", error);
-  });
+  playMusic();
 
   if (index < 0 || index >= messages.length - 1) {
     showMessage(0);
@@ -442,6 +473,16 @@ function start() {
 }
 
 startBtn.addEventListener("click", start);
+
+// Thêm sự kiện cho nút bật/tắt nhạc góc trên thiệp
+musicToggleBtn.addEventListener("click", () => {
+  if (bgMusic.paused) {
+    playMusic();
+  } else {
+    bgMusic.pause();
+    musicToggleBtn.textContent = "🔇 Bật nhạc";
+  }
+});
 
 pauseBtn.addEventListener("click", () => {
   if (index >= messages.length - 1 && paused) {
@@ -456,10 +497,11 @@ pauseBtn.addEventListener("click", () => {
 
   if (paused) {
     clearTimeout(timer);
-    bgMusic.pause(); // Tạm dừng nhạc khi bấm dừng đọc
+    bgMusic.pause();
+    musicToggleBtn.textContent = "🔇 Bật nhạc";
   } else {
     scheduleNext();
-    bgMusic.play(); // Phát tiếp nhạc
+    playMusic();
   }
 });
 
@@ -468,7 +510,7 @@ nextBtn.addEventListener("click", () => {
   paused = false;
   pauseBtn.textContent = "Tạm dừng";
 
-  bgMusic.play().catch(() => {});
+  playMusic();
 
   if (index < messages.length - 1) {
     showMessage(index + 1);
@@ -486,4 +528,38 @@ function makeHeart() {
   const el = document.createElement("span");
 
   el.className = "heart";
-  el.textContent =
+  el.textContent = ["♡", "♥", "💗", "✧", "🌸"][
+    Math.floor(Math.random() * 5)
+  ];
+
+  el.style.left = `${Math.random() * 100}%`;
+  el.style.fontSize = `${14 + Math.random() * 22}px`;
+  el.style.animationDuration = `${8 + Math.random() * 8}s`;
+
+  hearts.appendChild(el);
+
+  setTimeout(() => el.remove(), 17000);
+}
+
+setInterval(makeHeart, 850);
+
+for (let i = 0; i < 12; i++) {
+  setTimeout(makeHeart, i * 250);
+}
+
+// Hiệu ứng ánh sáng lấp lánh
+for (let i = 0; i < 8; i++) {
+  const sparkle = document.createElement("span");
+
+  sparkle.className = "sparkle";
+  sparkle.textContent = "✦";
+  sparkle.style.left = `${8 + Math.random() * 84}%`;
+  sparkle.style.top = `${8 + Math.random() * 84}%`;
+  sparkle.style.animationDelay = `${Math.random() * 2}s`;
+  sparkle.style.fontSize = `${10 + Math.random() * 10}px`;
+
+  document.querySelector(".card").appendChild(sparkle);
+}
+</script>
+</body>
+</html>
