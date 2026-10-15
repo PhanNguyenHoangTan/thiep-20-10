@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -255,7 +254,6 @@ button:disabled {
   }
 }
 
-/* Tối ưu cho điện thoại */
 @media (max-width: 480px) {
   body {
     padding: 16px 10px;
@@ -317,6 +315,11 @@ button:disabled {
 <div class="glow two"></div>
 <div class="hearts" id="hearts"></div>
 
+<!-- Thẻ audio chứa file nhạc đã tải lên GitHub -->
+<audio id="bgMusic" loop>
+  <source src="thegioicuanh.mp3" type="audio/mpeg">
+</audio>
+
 <main class="card">
   <div class="topline">A little letter, just for you</div>
   <div class="flower">🌷 ✨ 🌷</div>
@@ -357,25 +360,15 @@ button:disabled {
 <script>
 const messages = [
   "Gửi em, cô gái đặc biệt 💗",
-
   "Chúc em có một ngày 20/10 thật vui vẻ, luôn xinh đẹp, rạng rỡ và gặp thật nhiều điều dịu dàng trong cuộc sống nhé. 🌷",
-
   "Có một điều mà có lẽ em chưa biết, đó là em đã khiến những ngày bình thường của anh trở nên thú vị hơn một chút.",
-
   "Đôi khi chỉ là một nụ cười, một câu nói vu vơ hay một khoảnh khắc rất đỗi bình thường của em thôi, cũng đủ khiến anh nhớ mãi.",
-
   "Anh không biết sau này chúng ta sẽ như thế nào, nhưng hiện tại, anh thật lòng rất vui vì được biết đến em.",
-
   "Anh làm chiếc thiệp nhỏ này để gửi em một lời chúc đặc biệt, và cũng để em biết rằng có một người đang âm thầm mong em luôn vui vẻ, hạnh phúc và được yêu thương thật nhiều.",
-
   "Nếu hôm nay chưa có ai nói với em điều này, thì để anh nói nhé:",
-
   "Em xứng đáng với tất cả những điều tốt đẹp nhất. 💗",
-
   "Chúc cô gái anh quý có một ngày 20/10 thật đáng nhớ.",
-
   "P/s: Nếu em tò mò người gửi lá thư này đang nghĩ gì về em… thì câu trả lời là: nhiều hơn em tưởng một chút đấy. 🤭",
-
   "Một người đang muốn đến gần em hơn 💗"
 ];
 
@@ -385,6 +378,7 @@ const progress = document.getElementById("progress");
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const nextBtn = document.getElementById("nextBtn");
+const bgMusic = document.getElementById("bgMusic"); // Lấy thẻ audio
 
 let index = -1;
 let timer = null;
@@ -435,6 +429,11 @@ function start() {
   nextBtn.disabled = false;
   pauseBtn.textContent = "Tạm dừng";
 
+  // Bật nhạc khi bấm nút mở thư
+  bgMusic.play().catch(error => {
+    console.log("Trình duyệt chặn tự động phát nhạc:", error);
+  });
+
   if (index < 0 || index >= messages.length - 1) {
     showMessage(0);
   }
@@ -457,8 +456,10 @@ pauseBtn.addEventListener("click", () => {
 
   if (paused) {
     clearTimeout(timer);
+    bgMusic.pause(); // Tạm dừng nhạc khi bấm dừng đọc
   } else {
     scheduleNext();
+    bgMusic.play(); // Phát tiếp nhạc
   }
 });
 
@@ -466,6 +467,8 @@ nextBtn.addEventListener("click", () => {
   clearTimeout(timer);
   paused = false;
   pauseBtn.textContent = "Tạm dừng";
+
+  bgMusic.play().catch(() => {});
 
   if (index < messages.length - 1) {
     showMessage(index + 1);
@@ -483,38 +486,4 @@ function makeHeart() {
   const el = document.createElement("span");
 
   el.className = "heart";
-  el.textContent = ["♡", "♥", "💗", "✧", "🌸"][
-    Math.floor(Math.random() * 5)
-  ];
-
-  el.style.left = `${Math.random() * 100}%`;
-  el.style.fontSize = `${14 + Math.random() * 22}px`;
-  el.style.animationDuration = `${8 + Math.random() * 8}s`;
-
-  hearts.appendChild(el);
-
-  setTimeout(() => el.remove(), 17000);
-}
-
-setInterval(makeHeart, 850);
-
-for (let i = 0; i < 12; i++) {
-  setTimeout(makeHeart, i * 250);
-}
-
-// Hiệu ứng ánh sáng lấp lánh
-for (let i = 0; i < 8; i++) {
-  const sparkle = document.createElement("span");
-
-  sparkle.className = "sparkle";
-  sparkle.textContent = "✦";
-  sparkle.style.left = `${8 + Math.random() * 84}%`;
-  sparkle.style.top = `${8 + Math.random() * 84}%`;
-  sparkle.style.animationDelay = `${Math.random() * 2}s`;
-  sparkle.style.fontSize = `${10 + Math.random() * 10}px`;
-
-  document.querySelector(".card").appendChild(sparkle);
-}
-</script>
-</body>
-</html>
+  el.textContent =
