@@ -315,29 +315,24 @@ button:focus-visible {
   }
 }
 
-/* Thiệp lời nhắn phản hồi – phong cách giấy viết thư */
+/* Thiệp lời nhắn phản hồi */
 .reply-panel {
   display: none;
   margin-top: 24px;
   padding: clamp(22px, 4vw, 34px);
-  border: 1px solid #e6d8c5;
-  border-radius: 5px;
-  color: #4d2430;
-  background:
-    repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(174,157,139,.20) 32px, transparent 33px),
-    linear-gradient(145deg, #fffdf6, #f8f0df);
-  box-shadow: 0 16px 42px rgba(46,15,25,.20);
+  border: 1px solid #ffd5e3;
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255,248,251,.98), rgba(255,232,241,.96));
+  box-shadow: 0 14px 38px rgba(179,67,111,.10);
   animation: cardIn .6s ease both;
 }
 .reply-panel.visible { display: block; }
 .reply-panel h2 {
-  color: #6c2438;
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
+  color: #b83e70;
   font-size: clamp(1.35rem, 4vw, 1.8rem);
-  font-weight: 600;
+  font-weight: 500;
   margin: 0 0 12px;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 .reply-panel p { line-height: 1.8; margin: 0 0 18px; }
 .reply-panel textarea {
@@ -345,77 +340,42 @@ button:focus-visible {
   width: 100%;
   min-height: 150px;
   resize: vertical;
-  padding: 13px;
-  border: 1.5px solid #9d5b65;
-  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid #f2bfd1;
+  border-radius: 16px;
   outline: none;
-  background: rgba(255,255,255,.72);
-  color: #3f2630;
-  font: .98rem/1.7 Arial, Tahoma, sans-serif;
+  background: #fff;
+  color: var(--ink);
+  font: 1rem/1.7 Arial, Tahoma, sans-serif;
 }
 .reply-panel textarea:focus {
-  border-color: #b83e70;
-  box-shadow: 0 0 0 3px #b83e701c;
+  border-color: #e84c83;
+  box-shadow: 0 0 0 3px #e84c8320;
 }
 .reply-panel .reply-actions { margin-top: 14px; }
-.reply-panel button {
-  background: linear-gradient(135deg, #e65c88, #c82e68);
-  color: white;
-}
 .reply-result {
   display: none;
-  position: fixed;
-  z-index: 1002;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(460px, calc(100vw - 34px));
-  max-height: 82vh;
-  overflow-y: auto;
-  margin: 0;
-  padding: 30px 24px 24px;
-  border-radius: 22px;
-  background: linear-gradient(145deg, #fffdf8, #fff4e9);
-  border: 1px solid rgba(255,255,255,.9);
-  box-shadow: 0 24px 90px rgba(0,0,0,.35);
-  text-align: center;
-  animation: cardIn .35s ease both;
+  margin-top: 18px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px dashed #ef9fbb;
+  text-align: left;
 }
 .reply-result.visible { display: block; }
 .reply-result .success-title {
   text-align: center;
-  color: #6c2438;
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
-  font-size: 1.35rem;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-bottom: 18px;
+  color: #b83e70;
+  font-size: 1.25rem;
+  margin-bottom: 12px;
 }
 .reply-result .reply-content {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   line-height: 1.8;
   margin: 0;
-  padding: 15px;
-  border: 1px dashed #d9b9b2;
-  border-radius: 12px;
-  background: rgba(255,255,255,.5);
-  color: #4d2430;
-  text-align: center;
 }
-.reply-result .controls { margin-bottom: 0; }
 .reply-error { color: #b4235a; font-size: .9rem; margin-top: 9px !important; }
-body.reply-success::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 1001;
-  background: rgba(22, 9, 15, .68);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-}
-body.reply-success { overflow: hidden; }
 
 </style>
 </head>
@@ -432,8 +392,8 @@ body.reply-success { overflow: hidden; }
 <div class="hearts" id="hearts"></div>
 
 <main class="card">
-  <div class="topline">A little letter, just for you 💗 </div>
-  
+  <div class="topline">A little letter, just for you</div>
+  <div class="flower">🌷 ✨ 🌷</div>
 
   <h1>Gửi Nguyệt Hằng,<br>cô gái đặc biệt 💗</h1>
 
@@ -470,7 +430,7 @@ body.reply-success { overflow: hidden; }
 
 
 <section class="card reply-panel" id="replyPanel" aria-live="polite">
-  <div class="topline">A little note from you ♡</div>
+  <div class="topline">A little note from you 💗</div>
   <div class="flower">💌 🌷 💌</div>
 
   <div id="replyIntro">
@@ -495,7 +455,7 @@ body.reply-success { overflow: hidden; }
     <p style="margin-bottom:8px;text-align:center;">Đây là những điều em muốn gửi gắm:</p>
     <p class="reply-content" id="replyContent"></p>
     <div class="controls">
-      <button class="secondary" id="editReplyBtn" type="button">Ghi lại khoảnh khắc 💌</button>
+      <button class="secondary" id="editReplyBtn" type="button">Chỉnh sửa lời nhắn</button>
     </div>
   </div>
 </section>
@@ -693,7 +653,6 @@ function showReplyPanel() {
 writeReplyBtn.addEventListener("click", () => {
   replyIntro.hidden = true;
   replyResult.classList.remove("visible");
-  document.body.classList.remove("reply-success");
   replyForm.hidden = false;
   replyInput.focus();
   replyPanel.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -714,7 +673,7 @@ replyForm.addEventListener("submit", (event) => {
   replyForm.hidden = true;
   replyIntro.hidden = true;
   replyResult.classList.add("visible");
-  document.body.classList.add("reply-success");
+  replyPanel.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 
 replyInput.addEventListener("input", () => {
